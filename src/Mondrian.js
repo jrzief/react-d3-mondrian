@@ -21,8 +21,8 @@ import { hierarchy } from 'd3-hierarchy';
   ]
 }; */
 
-const generateMondrian = ({ value, depth = 0 }) => {
-  const N = Math.round(Math.random() * 5);
+/* const generateMondrian = ({ value, colorRatios, depth = 0 }) => {
+  const N = Math.round(Math.random() * 8);
 
   const createColor = ({ red, blue, yellow, black }) => {
     const probabilitySpace = [
@@ -40,18 +40,19 @@ const generateMondrian = ({ value, depth = 0 }) => {
 
   return {
     value,
-    color: createColor({ red: 0.3, blue: 0.2, yellow: 0.6, black: 0.4 }),
+    color: createColor(colorRatios), //({ red: 0.3, blue: 0.2, yellow: 0.6, black: 0.4 }),
     children:
-      depth < 3
+      depth < 2
         ? d3.range(N).map(_ =>
             generateMondrian({
               value: value / N,
+              colorRatios,
               depth: depth + 1
             })
           )
         : null
   };
-};
+};   */
 
 const MondrianRect = ({ node }) => {
   const { x0, y0, x1, y1, children } = node,
@@ -93,14 +94,14 @@ const MondrianRect = ({ node }) => {
   );
 };
 
-const Mondrian = ({ x, y, width, height }) => {
+const Mondrian = ({ x, y, width, height, data }) => {
   const treemap = d3
     .treemap()
     .size([width, height])
     .padding(5)
     .tile(d3.treemapBinary);
 
-  const data = generateMondrian({ value: 100 });
+  //const data = generateMondrian({ value: 100, colorRatios });
 
   const root = treemap(
     hierarchy(data)
